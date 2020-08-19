@@ -81,7 +81,7 @@ Only change the itag if you know what you're doing
 '''
 
 while True:
-    url = input('Enter the url of the video or playlist: ')
+    url = input('Enter the url of the video or playlist: ').rstrip()
     print()
     video = None
 
@@ -90,9 +90,9 @@ while True:
             video = []
             playlist = Playlist(url)
             playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-            print(playlist.video_urls)
+            # print(playlist.video_urls)
             for v in playlist.video_urls:
-                video.append(YouTube(v))
+                video.append(YouTube(v.strip()))
         else:
             video = YouTube(url)
     except:
