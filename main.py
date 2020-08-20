@@ -85,28 +85,70 @@ while True:
     print()
     video = None
 
-    try:
-        if 'list' in url:
-            video = []
-            playlist = Playlist(url)
-            playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-            # print(playlist.video_urls)
-            for v in playlist.video_urls:
-                video.append(YouTube(v.strip()))
-        else:
+    if 'list' in url:
+        video = []
+        playlist = Playlist(url)
+        playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
+        # print(playlist.video_urls)
+        for v in playlist.video_urls:
+            try:
+                yt = YouTube(v)
+                video.append(yt)
+                print("Title  :", yt.title)
+                print("Length :", convert_time(int(yt.length)))
+                print("Channel:", yt.author)
+                print()
+            except:
+                print("Error: Failed to load video at:", v)
+                print()
+    else:
+        try:
             video = YouTube(url)
-    except:
-        print("Couldn't find video at url:", url)
+        except:
+            print("Couldn't find video at url:", url)
 
     if video is not None:
         # if its a playlist
         if str(type(video)) == "<class 'list'>":
             print("Videos :", len(video))
-            for v in video:
-                print("Title  :", v.title)
-                print("Length :", convert_time(int(v.length)))
-                print("Channel:", v.author)
+            print()
+
+            if input("Download this playlist (Y or N): ").lower() == 'y':
                 print()
+                dl = input("Download video or audio: ")
+                print()
+                while dl.lower() != 'video' and dl.lower() != 'audio':
+                    dl = input("Enter video or audio as download options: ")
+                    print()
+                if dl.lower() == 'video':
+                    res = input("Enter desired resolution (or high for highest avaliable): ")
+                    if res.lower() == 'high':
+                        for v in video:
+                            stream = v.streams.get_highest_resolution()
+                            if stream is None:
+                                print("Failed to get stream for", v.title)
+                            else:
+                                print("Downloading:", v.title)
+                                stream.download(output_path=download_dir, filename=v.title)
+                    else:
+                        for v in video:
+                            stream = v.streams.get_by_resolution(res)
+                            if stream is None:
+                                print("Failed to get stream for", v.title)
+                            else:
+                                print("Downloading:", v.title)
+                                stream.download(output_path=download_dir, filename=v.title)
+
+                elif dl.lower() == 'audio':
+                    for v in video:
+                        stream = v.streams.get_by_itag(audio_itag)
+                        if stream is None:
+                            print("Failed to get stream for", v.title)
+                        else:
+                            print("Downloading:", v.title)
+                            stream.download(output_path=download_dir, filename=v.title)
+                print("Download complete at", download_dir)
+
         # if its just a video
         else:
             print("Title  : ", video.title)
@@ -130,7 +172,7 @@ while True:
                     if res.lower() == 'high':
                         stream = video.streams.get_highest_resolution()
                     else:
-                        stream = video.stream.get_by_resolution(res)
+                        stream = video.streams.get_by_resolution(res)
 
                 elif dl.lower() == 'audio':
                     stream = video.streams.get_by_itag(audio_itag)
