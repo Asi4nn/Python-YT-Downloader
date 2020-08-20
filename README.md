@@ -17,3 +17,8 @@ Line 57 has the audio i_tag, which controls the quality of the audio only downlo
 download_dir = 'C:\\Users\\leowa\\Music'
 audio_itag = 140  # streams have a specific identifying tag, 140 is 128kbps audio only
 ```
+
+## Disclaimer
+
+- Some videos tend to not load, not at the fault of the program, but because of the module
+- From testing, it seems quite random to whether a video will load or not, so try a few times if a video doesn't load
