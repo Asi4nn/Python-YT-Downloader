@@ -14,6 +14,8 @@ download_dir = 'C:\\Users\\leowa\\Music'
 audio_itag = 140  # streams have a specific identifying tag, 140 is 128kbps audio only
 ```
 
+If you're using the exe build instead, the program will always download in the folder that it's in
+
 ## Disclaimer
 
 - Some videos tend to not load, not at the fault of the program, but because of the module
