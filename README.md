@@ -1,9 +1,5 @@
 # Python-YT-Downloader
 
-## Plans
-- Be able download mp3 or mp4 files
-- Be able to download playlists
-
 ## How to use
 
 Requires pytube3 to be installed, the program will try and install this for the user on launch
