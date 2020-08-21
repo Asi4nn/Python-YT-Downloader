@@ -129,7 +129,7 @@ while True:
                                 print("Failed to get stream for", v.title)
                             else:
                                 print("Downloading:", v.title)
-                                stream.download(output_path=download_dir, filename=v.title)
+                                stream.download(filename=v.title)
                     else:
                         for v in video:
                             stream = v.streams.get_by_resolution(res)
